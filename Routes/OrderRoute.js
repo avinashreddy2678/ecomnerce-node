@@ -28,7 +28,7 @@ router.post("/payment/checkout", async (req, res) => {
 });
 
 router.post("/paymentverifcation", async (req, res) => {
-  return res.redirect("http://localhost:3000/cart");
+  return res.redirect("https://ecommerce-admin-gwx2.vercel.app/cart");
 });
 
 router.get("/CheckAvailbility/:productid/:size", async (req, res) => {
