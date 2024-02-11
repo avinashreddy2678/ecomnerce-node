@@ -20,6 +20,10 @@ const Orderschema = new mongoose.Schema({
   phonenumber:{
     type:String,
   },
+  createdAt:{
+    type:Date,
+    default:Date.now
+  }
 });
 const Order = mongoose.model("Order", Orderschema);
 export default Order;

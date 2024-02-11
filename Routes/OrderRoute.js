@@ -2,6 +2,7 @@ import express, { response } from "express";
 import Admin from "../Models/Admin.js";
 import Order from "../Models/Order.js";
 import Razorpay from "razorpay";
+import { verifyToken } from "./AdminRoute.js";
 
 const router = express.Router();
 
@@ -10,6 +11,21 @@ const instance = new Razorpay({
   key_secret: process.env.RAZORPAY_SECREAT_KEY,
 });
 
+
+
+// for admin routes
+
+router.get("/Allorders",verifyToken,async(req,res)=>{
+  const firstuser=await Admin.findOne();
+  if(!firstuser){
+    return res.status(404).json({message:"No Admin Found"})
+  }
+  return res.status(200).json({data:firstuser.Order})
+})
+
+
+
+// for user interface
 router.get("/getKey", async (req, res) => {
   return res.json({ key_secret: process.env.RAZORPAY_API__KEY });
 });
@@ -19,7 +35,7 @@ router.post("/payment/checkout", async (req, res) => {
     req.body;
     console.log(products)
     const firstUser = await Admin.findOne();
-    const neworder = await new Order({ name, amount, product:products, pincode, fulladdress, phonenumber });
+    const neworder = await new Order({ name, amount, product:products, pincode, fulladdress, phonenumber,Date:new Date() });
     firstUser.Order.push(neworder);
     firstUser.markModified("Order");
     await firstUser.save();
@@ -82,4 +98,10 @@ router.get("/CheckInOrder/:productid/:size", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
+
+// for admin interface
+
+
+
 export { router as OrderRouter };
