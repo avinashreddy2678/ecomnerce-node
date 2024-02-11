@@ -17,8 +17,9 @@ router.get("/getKey", async (req, res) => {
 router.post("/payment/checkout", async (req, res) => {
   const { amount, name, products, pincode, fulladdress, phonenumber } =
     req.body;
+    console.log(products)
     const firstUser = await Admin.findOne();
-    const neworder = await new Order({ name, amount, products, pincode, fulladdress, phonenumber });
+    const neworder = await new Order({ name, amount, product:products, pincode, fulladdress, phonenumber });
     firstUser.Order.push(neworder);
     firstUser.markModified("Order");
     await firstUser.save();
