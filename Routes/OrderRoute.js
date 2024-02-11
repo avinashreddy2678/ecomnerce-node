@@ -2,7 +2,6 @@ import express, { response } from "express";
 import Admin from "../Models/Admin.js";
 import Order from "../Models/Order.js";
 import Razorpay from "razorpay";
-import crypto from "crypto";
 
 const router = express.Router();
 
@@ -18,13 +17,17 @@ router.get("/getKey", async (req, res) => {
 router.post("/payment/checkout", async (req, res) => {
   const { amount, name, products, pincode, fulladdress, phonenumber } =
     req.body;
-
+    const firstUser = await Admin.findOne();
+    const neworder = await new Order({ name, amount, products, pincode, fulladdress, phonenumber });
+    firstUser.Order.push(neworder);
+    firstUser.markModified("Order");
+    await firstUser.save();
   var options = {
-    amount,
+    amount:amount*100,
     currency: "INR",
   };
   const orders = await instance.orders.create(options);
-  return res.json({ messages: "success", orders });
+  return res.json({ messages: "success", orders,firstUser });
 });
 
 router.post("/paymentverifcation", async (req, res) => {

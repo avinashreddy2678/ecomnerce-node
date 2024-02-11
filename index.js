@@ -21,5 +21,5 @@ app.use("/Product",ProductRouter);
 app.use("/Billboard",Billboard)
 app.use("/Orders",OrderRouter);
 app.listen(process.env.PORT_NUMBER||4001,()=>{
-    console.log("Server is On Fire");
+    console.log(`Server is On Fire ${process.env.PORT_NUMBER} ` );
 })

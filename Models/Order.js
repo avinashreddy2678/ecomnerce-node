@@ -1,16 +1,24 @@
 import mongoose from "mongoose";
 const Orderschema = new mongoose.Schema({
-  productid: {
-    type: mongoose.Schema.Types.String,
+  product: {
+    type: mongoose.Schema.Types.Mixed,
     ref: "Product",
   },
-  isOrdered: {
-    type: Boolean,
-    default: false,
+  amount: {
+      type:Number
   },
-  isPaid: {
-    type: Boolean,
-    default: false,
+  name:{
+    type:String,
+  }
+  ,
+  pincode:{
+    type:String,
+  },
+  fulladdress:{
+    type:String,
+  },
+  phonenumber:{
+    type:String,
   },
 });
 const Order = mongoose.model("Order", Orderschema);
